@@ -38,20 +38,25 @@ function App() {
   };
 
   // עדכון על שינויים מ־Firebase
-  useEffect(() => {
-    const dirRef = ref(database, 'move/test/int');
-    const servoRef = ref(database, 'move/grabe');
+useEffect(() => {
+  const dirRef = ref(database, 'move/test/int');
+  const servoRef = ref(database, 'move/grabe');
 
-    const unsubDir = onValue(dirRef, snapshot => {
-      const val = snapshot.val();
-      if (val !== null) setDirection(val);
-    });
-    const unsubServo = onValue(servoRef, snapshot => {
-      const val = snapshot.val();
-      if (val !== null) setServoPosition(val);
-    });
-  
-  }, []);
+  const unsubDir = onValue(dirRef, (snapshot) => {
+    const val = snapshot.val();
+    if (val !== null) setDirection(val);
+  });
+  const unsubServo = onValue(servoRef, (snapshot) => {
+    const val = snapshot.val();
+    if (val !== null) setServoPosition(val);
+  });
+
+  return () => {
+    // להסיר מאזינים בעת פירוק
+    if (unsubDir) unsubDir();
+    if (unsubServo) unsubServo();
+  };
+}, []);
 
   const handleDirectionChange = (newDirection) => {
     setDirection(newDirection);
