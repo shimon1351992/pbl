@@ -50,10 +50,7 @@ function App() {
       const val = snapshot.val();
       if (val !== null) setServoPosition(val);
     });
-    return () => {
-      dirRef.off();
-      servoRef.off();
-    };
+  
   }, []);
 
   const handleDirectionChange = (newDirection) => {
